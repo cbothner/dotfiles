@@ -511,8 +511,10 @@ let g:vim_markdown_fenced_languages = [
 \ 'ts=typescript',
 \ 'haskell=haskell',
 \ 'tsx=typescript']
+let g:vim_markdown_new_list_item_indent = 0
 au FileType markdown setlocal formatoptions=twacq spell
 autocmd FileType markdown call textobj#quote#init()
+au FileType markdown let b:delimitMate_expand_space = 0
 " }}}
 
 " Mail {{{
