@@ -35,6 +35,13 @@ if command -v apt-get &> /dev/null; then
   sudo apt-get update
 fi
 
+if [[ uname -eq "Darwin" ]] && ! command -v brew &> /dev/null; then
+  # Install homebrew
+  echo --- Installing homebrew
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  [[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
+fi
+
 function install {
   if ! command -v name &> /dev/null; then
     if command -v apt-get &> /dev/null; then
