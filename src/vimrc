@@ -63,6 +63,8 @@ if executable('shadowenv')
   Plug 'Shopify/shadowenv.vim'
 endif
 Plug 'janko/vim-test'
+Plug 'kevinhwang91/nvim-ufo'
+Plug 'kevinhwang91/promise-async' " required by nvim-ufo
 " }}}
 
 " {{{ Language Support
@@ -168,10 +170,6 @@ map k gk
 
 " Don’t open folds when using { and } to move
 set foldopen-=block
-
-" Automatically open all folds when opening a file
-autocmd BufWinEnter * let &foldlevel = max(map(range(1, line('$')), 'foldlevel(v:val)'))
-
 
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
@@ -318,21 +316,51 @@ local on_attach = function(client, bufnr)
 
 end
 
--- Shopify's rubocop lsp
+-- Shopify's ruby lsp
+local lspconfig = require 'lspconfig'
 local configs = require 'lspconfig.configs'
 local util = require 'lspconfig/util'
-configs.rubocop = {
-  name = "Rubocop",
-  default_config = {
-    root_dir = util.root_pattern('Gemfile', '.git'),
-    cmd = { "bundle", "exec", "rubocop-lsp" },
-    filetypes = { "ruby" },
-  },
-}
+
+if not configs.ruby_lsp then
+  local enabled_features = {
+    "documentHighlights",
+    "documentSymbols",
+    "foldingRanges",
+    "selectionRanges",
+    "semanticHighlighting",
+    "formatting",
+    "codeActions",
+    }
+
+  configs.ruby_lsp = {
+    default_config = {
+      cmd = { "bundle", "exec", "ruby-lsp" },
+      filetypes = { "ruby" },
+      root_dir = util.root_pattern("Gemfile", ".git"),
+      init_options = {
+        enabledFeatures = enabled_features,
+        },
+      settings = {},
+      },
+    commands = {
+      FormatRuby = {
+        function()
+        vim.lsp.buf.format({
+        name = "ruby_lsp",
+        async = true,
+        })
+      end,
+      description = "Format using ruby-lsp",
+      },
+    },
+  }
+end
+
+lspconfig.ruby_lsp.setup({ on_attach = on_attach, capabilities = capabilities })
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "sorbet", "rust_analyzer", "tsserver", "rubocop" }
+local servers = { "sorbet", "rust_analyzer", "tsserver" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -359,6 +387,15 @@ require('lspfuzzy').setup {
 }
 
 EOF
+
+" Fold
+lua <<LUA
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
+require('ufo').setup()
+LUA
 
 
 " Compe
