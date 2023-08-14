@@ -327,7 +327,6 @@ if not configs.ruby_lsp then
     "documentSymbols",
     "foldingRanges",
     "selectionRanges",
-    "semanticHighlighting",
     "formatting",
     "codeActions",
     }
