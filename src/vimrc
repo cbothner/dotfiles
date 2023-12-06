@@ -506,7 +506,7 @@ nmap <silent> <leader>ts :TestSuite<CR>
 nmap <silent> <leader>tl :TestLast<CR>
 nmap <silent> <leader>tg :TestVisit<CR>
 let test#strategy = "dispatch"
-
+let g:dispatch_tmux_pipe_pane = 1  " needed so $stdout.tty? is true and reline works when debugging
 " }}}
 
 " Language support {{{
