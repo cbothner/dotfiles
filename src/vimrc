@@ -472,19 +472,9 @@ EOF
       \ 'spinner': ['fg', 'Label'],
       \ 'header':  ['fg', 'Comment'] }
 
-command! -bang -nargs=* GGrep
-  \ call fzf#vim#grep(
-  \   'git grep --line-number -- '.shellescape(<q-args>), 0,
-  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
-
-command! -bang -nargs=* GGrepNoTests
-  \ call fzf#vim#grep(
-  \   'git grep --line-number '.shellescape(<q-args>), 0,
-  \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
-
 nmap <silent> <c-p> :GFiles<CR>
 nmap <silent> <c-t> :Buffers<CR>
-nmap <silent> <c-f> :GGrep<CR>
+nmap <silent> <c-f> :Rg<CR>
 
 " An action can be a reference to a function that processes selected lines
 function! s:build_quickfix_list(lines)
@@ -542,6 +532,7 @@ au FileType tex nnoremap <leader>lv :!open %:r.pdf<cr>
 " Markdown {{{
 let g:vim_markdown_toc_autofit = 1
 let g:vim_markdown_folding_level = 6
+let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_fenced_languages = [
 \ 'js=typescript',

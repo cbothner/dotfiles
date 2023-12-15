@@ -104,6 +104,8 @@ nvim --headless +PlugInstall +qall
 echo --- neovim configured
 echo
 
+install rg
+
 if [[ $SPIN ]]; then
   git config --global user.email "cameron.bothner@shopify.com"
   git config --global user.name "Cameron Bothner"
