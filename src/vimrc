@@ -40,6 +40,7 @@ Plug 'whatyouhide/vim-textobj-xmlattr' " ix
 Plug 'rubik/vim-base16-paraiso'
 Plug 'arzg/vim-colors-xcode'
 Plug 'morhetz/gruvbox'
+Plug 'folke/tokyonight.nvim'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'airblade/vim-gitgutter'   " Diff markers in the gutter
 Plug 'bling/vim-airline'        " Status
@@ -211,8 +212,8 @@ if has('mouse_sgr')
 endif
 
 set termguicolors
-colorscheme base16-paraiso
-set bg=dark
+colorscheme tokyonight
+set bg=light
 let g:airline_theme = 'lucius' " 'lucius' is a good general-purpose theme
 
 let g:airline_powerline_fonts = 1
