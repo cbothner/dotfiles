@@ -106,6 +106,9 @@ echo
 
 install rg
 
+git clone https://github.com/Shopify/git-chain /usr/local/share/git-chain
+ln -sv /usr/local/share/git-chain/bin/git-chain /usr/local/bin/
+
 if [[ $SPIN ]]; then
   git config --global user.email "cameron.bothner@shopify.com"
   git config --global user.name "Cameron Bothner"
