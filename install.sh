@@ -77,8 +77,6 @@ if [ -f /usr/bin/batcat ]; then
   ln -s /usr/bin/batcat ~/.local/bin/bat
 fi
 
-install hub
-
 # Neovim
 if command -v apt-get &> /dev/null; then
   # Uninstall any old version of neovim which was installed from the wrong
