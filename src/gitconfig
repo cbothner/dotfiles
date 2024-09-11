@@ -23,3 +23,7 @@
 	writeCommitGraph = true
 [help]
 	autoCorrect = -1
+[http]
+	postBuffer = 52428800
+[rebase]
+	updateRefs = true
