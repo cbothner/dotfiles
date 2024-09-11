@@ -38,7 +38,7 @@ Plug('arzg/vim-colors-xcode')
 Plug('morhetz/gruvbox')
 Plug('folke/tokyonight.nvim')
 Plug('sonph/onehalf', { ['rtp'] = 'vim' })
-Plug('airblade/vim-gitgutter')          -- Diff markers in the gutter
+Plug('lewis6991/gitsigns.nvim')         -- Diff markers in the gutter
 Plug('bling/vim-airline')               -- Status
 Plug('vim-airline/vim-airline-themes')
 
@@ -54,7 +54,7 @@ Plug('ojroques/nvim-lspfuzzy')
 Plug('hrsh7th/cmp-nvim-lsp')
 Plug('hrsh7th/cmp-buffer')
 Plug('hrsh7th/cmp-path')
-Plug('hrsh7th/cmp-cmdline')
+-- Plug('hrsh7th/cmp-cmdline')
 Plug('hrsh7th/nvim-cmp')
 Plug('hrsh7th/cmp-vsnip')
 Plug('hrsh7th/vim-vsnip')
@@ -67,6 +67,9 @@ end
 Plug('janko/vim-test')
 Plug('kevinhwang91/nvim-ufo')
 Plug('kevinhwang91/promise-async') -- required by nvim-ufo
+Plug('nvim-lua/plenary.nvim')
+Plug('nvim-telescope/telescope.nvim')
+Plug('nvim-tree/nvim-web-devicons')
 Plug('pwntester/octo.nvim')
 
 -- AI
@@ -222,7 +225,8 @@ vim.opt.spelllang = 'en'
 vim.api.nvim_set_keymap('n', '<leader>lcd', ':cd %:p:h<CR>', { noremap = true, silent = true })
 
 -- Clean up when <leader><cr> is pressed
-vim.api.nvim_set_keymap('n', '<leader><CR>', ':noh<CR>:ccl<CR>:GitGutterAll<CR>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<leader><CR>', ':noh<CR>:ccl<CR>:GitGutterAll<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader><CR>', ':noh<CR>:ccl<CR>', { noremap = true, silent = true })
 
 vim.opt.mouse = 'a' -- Mouses are useful
 
@@ -272,7 +276,7 @@ cmp.setup({
     ['<C-e>'] = cmp.mapping.abort(),
     ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
@@ -283,12 +287,12 @@ cmp.setup({
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline({ '/', '?' }, {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
-})
+-- cmp.setup.cmdline({ '/', '?' }, {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = {
+--     { name = 'buffer' }
+--   }
+-- })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
@@ -369,6 +373,12 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 
 require('ufo').setup()
+
+require('gitsigns').setup()
+
+-- Octo
+require'nvim-web-devicons'.setup()
+require'octo'.setup()
 
 -- Copilot
 vim.api.nvim_create_autocmd("FileType", {
