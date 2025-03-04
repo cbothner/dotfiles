@@ -349,7 +349,7 @@ lspconfig.ruby_lsp.setup({
 })
 lspconfig.sorbet.setup({ on_attach = on_attach })
 lspconfig.rust_analyzer.setup({ on_attach = on_attach })
-lspconfig.tsserver.setup({ on_attach = on_attach })
+lspconfig.ts_ls.setup({ on_attach = on_attach })
 lspconfig.clangd.setup({ on_attach = on_attach })
 lspconfig.zls.setup { on_attach = on_attach, cmd = { 'zls' },
   settings = {
