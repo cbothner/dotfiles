@@ -334,22 +334,20 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", opts)
 end
 
-lspconfig.ruby_lsp.setup({ on_attach = on_attach })
+vim.lsp.set_log_level("info")
+lspconfig.ruby_lsp.setup({
+  on_attach = on_attach,
+  init_options = {
+    enabledFeatures = {
+      semanticHighlighting = false
+    },
+    tapiocaAddon = true,
+  },
+})
 lspconfig.sorbet.setup({ on_attach = on_attach })
 lspconfig.rust_analyzer.setup({ on_attach = on_attach })
 lspconfig.tsserver.setup({ on_attach = on_attach })
 lspconfig.clangd.setup({ on_attach = on_attach })
-
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    local bufnr = args.buf
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if client.name == "ruby_lsp" then
-      client.server_capabilities.definitionProvider = nil
-      client.server_capabilities.semanticTokensProvider = nil
-    end
-  end,
-})
 
 require('lspfuzzy').setup {
   methods = 'all',         -- either 'all' or a list of LSP methods (see below)
