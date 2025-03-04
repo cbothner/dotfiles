@@ -413,7 +413,7 @@ vim.g.fzf_colors = {
   header = { 'fg', 'Comment' }
 }
 
-vim.api.nvim_set_keymap('n', '<c-p>', ':GFiles<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<c-p>', ':Files<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '<c-t>', ':Buffers<CR>', { silent = true })
 vim.api.nvim_set_keymap('n', '<c-f>', ':Rg<CR>', { silent = true })
 
