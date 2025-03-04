@@ -129,6 +129,9 @@ Plug('cespare/vim-toml')
 Plug('stephpy/vim-yaml')
 Plug('pedrohdz/vim-yaml-folds')
 
+-- Zig
+Plug('ziglang/zig.vim')
+
 vim.fn['plug#end']()
 
 -- Editing Mechanics
@@ -348,6 +351,13 @@ lspconfig.sorbet.setup({ on_attach = on_attach })
 lspconfig.rust_analyzer.setup({ on_attach = on_attach })
 lspconfig.tsserver.setup({ on_attach = on_attach })
 lspconfig.clangd.setup({ on_attach = on_attach })
+lspconfig.zls.setup { on_attach = on_attach, cmd = { 'zls' },
+  settings = {
+    zls = {
+      enable_build_on_save = true,
+    }
+  }
+ }
 
 require('lspfuzzy').setup {
   methods = 'all',         -- either 'all' or a list of LSP methods (see below)
@@ -573,6 +583,10 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "rust",
   command = "setlocal colorcolumn=100"
 })
+
+-- Zig
+vim.g.zig_fmt_parse_errors = 0
+vim.g.zig_fmt_autosave = 0
 
 -- Technical details
 
