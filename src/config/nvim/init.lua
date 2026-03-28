@@ -307,11 +307,12 @@ require("lazy").setup({
       {
          'stevearc/conform.nvim',
          opts = {
-            format_on_save = { lsp_format = "prefer", timeout_ms = 500 },
             formatters_by_ft = {
+               graphql = { "prettier" },
                javascript = { "prettier" },
                json = { "prettier" },
                lua = { "stylua" },
+               sql = { "sqlfmt" },
                typescript = { "prettier" },
                yaml = { "prettier" },
             },
