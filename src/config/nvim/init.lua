@@ -364,6 +364,19 @@ require("lazy").setup({
          },
       },
 
+      {
+         'stevearc/oil.nvim',
+         ---@module 'oil'
+         ---@type oil.SetupOpts
+         opts = {
+            keymaps = {
+               ["<C-p>"] = false
+            },
+         },
+         dependencies = { { "echasnovski/mini.icons", opts = {} } },
+         lazy = false,
+      },
+
       -- AI
       --
       { 'github/copilot.vim' },
@@ -528,7 +541,8 @@ vim.api.nvim_set_keymap('n', '<leader>bd', ':Kwbd<CR>', { noremap = true })
 -- Close all the buffers
 vim.api.nvim_set_keymap('n', '<leader>ba', ':1,1000 bd!<CR>', { noremap = true })
 
-vim.api.nvim_set_keymap('n', '<leader>e', ':Explore<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>e', ':Oil<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>E', ':e!<CR>', { noremap = true, silent = true })
 
 -- Specify the behavior when switching between buffers
 vim.opt.switchbuf = 'useopen,usetab,newtab'
