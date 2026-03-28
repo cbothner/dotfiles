@@ -211,7 +211,7 @@ require("lazy").setup({
                buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", opts)
             end
 
-            vim.lsp.set_log_level("info")
+            -- vim.lsp.set_log_level("info")
             lspconfig.sorbet.setup({ on_attach = on_attach })
             lspconfig.ruby_lsp.setup({
                on_attach = on_attach,
@@ -222,7 +222,22 @@ require("lazy").setup({
                   tapiocaAddon = true,
                },
             })
-            lspconfig.rust_analyzer.setup({ on_attach = on_attach })
+            lspconfig.rust_analyzer.setup({
+               on_attach = on_attach,
+               settings = {
+                  ['rust-analyzer'] = {
+                     cargo = {
+                        buildScripts = {
+                           enable = true,
+                        },
+                        loadOutDirsFromCheck = true,
+                        procMacro = {
+                           enable = true,
+                        },
+                     },
+                  }
+               }
+            })
             lspconfig.ts_ls.setup({ on_attach = on_attach })
             lspconfig.clangd.setup({
                on_attach = on_attach,
