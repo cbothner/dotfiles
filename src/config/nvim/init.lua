@@ -181,78 +181,79 @@ require("lazy").setup({
             },
          },
          config = function()
-            local lspconfig = require 'lspconfig'
+            vim.api.nvim_create_autocmd('LspAttach', {
+               group = vim.api.nvim_create_augroup('my.lsp', {}),
+               callback = function(ev)
+                  local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
 
-            -- Use an on_attach function to only map the following keys
-            -- after the language server attaches to the current buffer
-            local on_attach = function(client, bufnr)
-               client.request = require('lspfuzzy').wrap_request(client.request)
+                  client.request = require('lspfuzzy').wrap_request(client.request)
 
-               local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-               local function buf_set_option(name, value) vim.api.nvim_set_option_value(name, value, { buf = bufnr }) end
+                  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(ev.buf, ...) end
+                  local function buf_set_option(name, value)
+                     vim.api.nvim_set_option_value(name, value, { buf = ev.buf })
+                  end
 
-               --Enable completion triggered by <c-x><c-o>
-               buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+                  --Enable completion triggered by <c-x><c-o>
+                  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-               -- Mappings.
-               local opts = { noremap = true, silent = true }
+                  -- Mappings.
+                  local opts = { noremap = true, silent = true }
 
-               -- See `:help vim.lsp.*` for documentation on any of the below functions
-               buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-               buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-               buf_set_keymap('n', '<leader><leader>', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-               buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-               buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-               buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-               buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-               buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-               buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-               buf_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setqflist()<CR>', opts)
-               buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", opts)
-            end
+                  -- See `:help vim.lsp.*` for documentation on any of the below functions
+                  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+                  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+                  buf_set_keymap('n', '<leader><leader>', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+                  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+                  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+                  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+                  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+                  buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+                  buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+                  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setqflist()<CR>', opts)
+                  buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", opts)
+               end
+            })
 
             -- vim.lsp.set_log_level("info")
-            lspconfig.sorbet.setup({ on_attach = on_attach })
-            lspconfig.ruby_lsp.setup({
-               on_attach = on_attach,
+            vim.lsp.config("ruby_lsp", {
                init_options = {
-                  enabledFeatures = {
-                     semanticHighlighting = false
-                  },
+                  enabledFeatures = { semanticHighlighting = false },
                   tapiocaAddon = true,
                },
             })
-            lspconfig.rust_analyzer.setup({
-               on_attach = on_attach,
+
+            vim.lsp.config("rust_analyzer", {
                settings = {
                   ['rust-analyzer'] = {
                      cargo = {
-                        buildScripts = {
-                           enable = true,
-                        },
+                        buildScripts = { enable = true },
                         loadOutDirsFromCheck = true,
-                        procMacro = {
-                           enable = true,
-                        },
+                        procMacro = { enable = true },
                      },
                   }
                }
             })
-            lspconfig.ts_ls.setup({ on_attach = on_attach })
-            lspconfig.clangd.setup({
-               on_attach = on_attach,
+
+            vim.lsp.config("clangd", {
                cmd = { 'clangd', '--header-insertion=never', '--query-driver=**' },
             })
-            lspconfig.zls.setup({
-               on_attach = on_attach,
+
+            vim.lsp.config("zls", {
                cmd = { 'zls' },
                settings = {
-                  zls = {
-                     enable_build_on_save = true,
-                  }
+                  zls = { enable_build_on_save = true }
                }
             })
-            lspconfig.lua_ls.setup { on_attach = on_attach }
+
+            vim.lsp.enable({
+               "sorbet",
+               "ruby_lsp",
+               "rust_analyzer",
+               "ts_ls",
+               "clangd",
+               "zls",
+               "lua_ls"
+            })
          end
       },
 
