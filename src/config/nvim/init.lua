@@ -19,15 +19,14 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-   install = { colorscheme = { "tokyonight-storm" } },
-   checker = { enabled = true },
+   install = { colorscheme = { "Atelier_HeathDark" } },
    spec = {
       {
-         "folke/tokyonight.nvim",
+         "atelierbram/vim-colors_atelier-schemes",
          lazy = false,
          priority = 1000,
          config = function()
-            vim.cmd([[colorscheme tokyonight-storm]])
+            vim.cmd([[colorscheme Atelier_HeathDark]])
             vim.opt.termguicolors = true
             vim.opt.background = 'dark'
          end,
@@ -131,12 +130,13 @@ require("lazy").setup({
             },
          },
          config = function()
+            vim.env.BAT_THEME = 'base16-atelierheath.light'
             vim.g.fzf_colors = {
                fg = { 'fg', 'Normal' },
                bg = { 'bg', 'Normal' },
                hl = { 'fg', 'Comment' },
-               ["fg+"] = { 'fg', 'CursorLine', 'CursorColumn', 'Normal' },
-               ["bg+"] = { 'bg', 'CursorLine', 'CursorColumn' },
+               ["fg+"] = { 'fg', 'SignColumn', 'CursorColumn', 'Normal' },
+               ["bg+"] = { 'bg', 'SignColumn', 'CursorColumn' },
                ["hl+"] = { 'fg', 'Statement' },
                info = { 'fg', 'PreProc' },
                border = { 'fg', 'Ignore' },
