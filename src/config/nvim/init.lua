@@ -1,3 +1,10 @@
+local handle = io.popen('defaults read -g AppleInterfaceStyle 2>/dev/null')
+if handle then
+   local result = handle:read('*a')
+   handle:close()
+   vim.opt.background = result:match('Dark') and 'dark' or 'light'
+end
+
 vim.g.mapleader = ','
 vim.api.nvim_set_keymap('n', '<leader>v', ':split ~/.config/nvim/init.lua<CR>', { noremap = true, silent = true })
 
@@ -19,17 +26,33 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-   install = { colorscheme = { "Atelier_HeathDark" } },
    spec = {
       {
          "atelierbram/vim-colors_atelier-schemes",
          lazy = false,
          priority = 1000,
          config = function()
-            vim.cmd([[colorscheme Atelier_HeathDark]])
             vim.opt.termguicolors = true
-            vim.opt.background = 'dark'
          end,
+      },
+      {
+         'f-person/auto-dark-mode.nvim',
+         opts = {
+            set_dark_mode = function()
+               vim.api.nvim_set_option_value('background', 'dark', {})
+               vim.cmd([[colorscheme Atelier_HeathDark]])
+               vim.g.airline_theme = 'Atelier_HeathDark'
+               vim.env.BAT_THEME = 'base16-atelierheath.dark'
+               if vim.g.loaded_airline then vim.cmd([[AirlineRefresh]]) end
+            end,
+            set_light_mode = function()
+               vim.api.nvim_set_option_value('background', 'light', {})
+               vim.cmd([[colorscheme Atelier_HeathLight]])
+               vim.g.airline_theme = 'Atelier_HeathLight'
+               vim.env.BAT_THEME = 'base16-atelierheath.light'
+               if vim.g.loaded_airline then vim.cmd([[AirlineRefresh]]) end
+            end,
+         },
       },
 
       -- Editing Mechanics
@@ -101,8 +124,6 @@ require("lazy").setup({
             { 'vim-airline/vim-airline-themes' },
          },
          config = function()
-            vim.g.airline_theme = 'lucius' -- 'lucius' is a good general-purpose theme
-
             vim.g.airline_powerline_fonts = 1
             vim.g['airline#extensions#tabline#enabled'] = 1
             vim.g['airline#extensions#branch#enabled'] = 1
@@ -130,7 +151,6 @@ require("lazy").setup({
             },
          },
          config = function()
-            vim.env.BAT_THEME = 'base16-atelierheath.light'
             vim.g.fzf_colors = {
                fg = { 'fg', 'Normal' },
                bg = { 'bg', 'Normal' },
